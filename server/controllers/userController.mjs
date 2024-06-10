@@ -1,4 +1,13 @@
-import User from '../models/userModel.mjs';
+import User from "../models/userModel.mjs";
+import jwt from "jsonwebtoken";
+
+/**
+ * Creates a JSON Web Token.
+ * @param {string} _id MongoDB document ID.
+ */
+const createToken = (_id) => {
+  return jwt.sign({ _id }, process.env.JWT_SECRET, { expires: '3d' });
+}
 
 /**
  * Logs a user in.
