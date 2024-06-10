@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
  * @param {string} _id MongoDB document ID.
  */
 const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.JWT_SECRET, { expires: '3d' });
+  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: '3d' });
 }
 
 /**
