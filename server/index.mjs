@@ -4,8 +4,9 @@ import mongoose from "mongoose";
 
 import "./loadEnvironment.mjs";
 
-import listRoutes from './routes/lists.mjs';
-import userRoutes from './routes/user.mjs';
+import listRoutes from "./routes/lists.mjs";
+import userRoutes from "./routes/user.mjs";
+import usersRoutes from "./routes/users.mjs";
 
 const app = express();
 const port = process.env.PORT;
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use('/api/v1/lists', listRoutes);
 app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/users', usersRoutes);
 
 try {
   await mongoose.connect(process.env.ATLAS_URI);
