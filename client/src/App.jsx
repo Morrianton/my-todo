@@ -5,18 +5,18 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import LoginPage from "./pages/login.page";
 import TasksPage from "./pages/tasks.page";
-import UserContext from "./contexts/User.context";
-import UserReducer from "./reducers/User.reducer";
+import AuthContext from "./contexts/Auth.context";
+import AuthReducer from "./reducers/Auth.reducer";
 
 function App() {
   const abortController = new AbortController();
-  const [user, dispatchForUser] = useReducer(UserReducer, null);
+  const [user, dispatchAuth] = useReducer(AuthReducer, null);
 
   useEffect(() => {
     axios(`/api/v1/users/${user._id}`, { signal: abortController.signal })
     .then((response) => {
       if (response.statusText === 'OK') {
-        dispatchForUser({ type: 'SET_USERS', payload: response.data });
+        dispatchAuth({ type: 'SET_USERS', payload: response.data });
       }
     })
     .catch((error) => {
@@ -33,10 +33,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <UserContext.Provider value={user}>
+        <AuthContext.Provider value={ user }>
           <Route path="/" element={ <TasksPage /> } />
           <Route path="/login" element={ <LoginPage /> } />
-        </UserContext.Provider>
+        </AuthContext.Provider>
       </Routes>
     </Router>
   );
