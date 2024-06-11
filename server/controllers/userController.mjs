@@ -33,11 +33,11 @@ export const logInUser = async (req, res) => {
  * @param {Request}  req Request object.
  * @param {Response} res Response object.
  */
-export const signupUser = async (req, res) => {
+export const signUpUser = async (req, res) => {
   const { email, password } = req.body;
   
   try {
-    const user = await User.signup(email, password);
+    const user = await User.signUp(email, password);
     const token = createToken(user._id);
     res.status(200).json({ email, token });
   } catch (error) {

@@ -3,17 +3,17 @@ import express from 'express';
 import {
   deleteUser,
   getUser,
-  loginUser,
-  signupUser
+  logInUser,
+  signUpUser
 } from '../controllers/userController.mjs';
 
 const router = express.Router();
 
 router.get('/:id', getUser);
 
-router.post('/login', loginUser);
+router.post('/login', logInUser);
 
-router.post('/signup', signupUser);
+router.post('/signup', signUpUser);
 
 router.delete('/:id', deleteUser);
 
