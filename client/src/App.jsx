@@ -3,8 +3,9 @@ import { useEffect, useReducer } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import "./App.css";
-import LoginPage from "./pages/login.page";
-import TasksPage from "./pages/tasks.page";
+import LoginPage from "./pages/Login.page";
+import SignupPage from "./pages/Signup.page";
+import TasksPage from "./pages/Tasks.page";
 import AuthContext from "./contexts/Auth.context";
 import AuthReducer from "./reducers/Auth.reducer";
 
@@ -36,7 +37,7 @@ function App() {
         <AuthContext.Provider value={ user }>
           <Route path="/" element={ <TasksPage /> } />
           <Route path="/login" element={ <LoginPage /> } />
-        </AuthContext.Provider>
+            <Route path="/signup" element={ <SignupPage /> } />
       </Routes>
     </Router>
   );
