@@ -1,5 +1,5 @@
 
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import "./App.css";
@@ -32,6 +32,7 @@ function App() {
   }, []);
 
   return (
+    <AuthContext.Provider value={ user }>
     <Router>
       <Routes>
         <AuthContext.Provider value={ user }>
@@ -40,6 +41,7 @@ function App() {
             <Route path="/signup" element={ <SignupPage /> } />
       </Routes>
     </Router>
+    </AuthContext.Provider>
   );
 }
 
