@@ -7,12 +7,12 @@ import {
 } from "react";
 
 import ListsReducer from "../reducers/Lists.reducer";
-import ListItem from "../components/ListItem";
+import AuthContext from "../contexts/Auth.context";
 import ListView from "../components/ListView";
 
 const TasksPage = () => {
-  const user = useContext(UserContext);
-  const [lists, dispatchForLists] = useReducer(ListsReducer, null);
+  const user = useContext(AuthContext);
+  const lists = useReducer(ListsReducer, []);
   const [isPending, setIsPending] = useState(true);
   const [currentList, setCurrentList] = useState({});
   const [entry, setEntry] = useState('');
