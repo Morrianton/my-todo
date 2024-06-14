@@ -93,7 +93,6 @@ export const deleteList = async (req, res) => {
  */
 export const updateList = async (req, res) => {
   const { id } = req.params;
-  console.log(req.body)
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: 'List ID is invalid.'});
