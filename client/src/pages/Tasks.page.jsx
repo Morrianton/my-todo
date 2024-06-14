@@ -23,7 +23,6 @@ const TasksPage = () => {
     axios('/api/v1/lists/', { signal: abortController.signal })
     .then((response) => {
       if (response.statusText === 'OK') {
-        dispatchForLists({ type: 'SET_LISTS', payload: response.data });
         setCurrentList(response.data[0]);
       }
       setIsPending(false);
@@ -40,31 +39,17 @@ const TasksPage = () => {
     return () => abortController.abort();
   }, []);
 
-  function addNewList() {
-    axios(`/api/v1/lists/`, { name: entry, items: [], owner_id: user._id })
+  const addNewList = () => {
+    const listDetails = { name: entry, items: [], owner_id: user._id };
+
+    axios(`/api/v1/lists/`, listDetails)
     .then((response) => {
       // toast pop-up
-      setEntry('');
-    })
-    .catch((error) => {
-      // toast pop-up
-    });
-  }
-  
-  function addListItem() {
-    axios.patch(
-      `/api/v1/lists/${currentList._id}`,
-      { items: [
-        ...currentList.items,
-        { id: `${currentList.name}-${currentList.items.length + 1}`, description: entry }
-      ]}
-    )
-    .then((response) => {
-      // toast pop-up
-      axios('/api/v1/lists/')
-      .then((response) => setCurrentList(response.data[0]))
-      .catch((error) => console.error(error));
-      setEntry('');
+      if (response.statusText === 'OK') {
+        dispatchLists({ type: 'CREATE_LIST', payload: listDetails });
+        setCurrentList(listDetails);
+        setEntry('');
+      }
     })
     .catch((error) => {
       // toast pop-up
@@ -74,26 +59,24 @@ const TasksPage = () => {
   
   return (
     <>
-      <div className="App">
-          { isPending && <p>Loading...</p> }
-          {
-            !isPending && !lists &&
-            <p>No lists yet.</p>
-          }
-          {
-            !isPending && lists && !currentList.items &&
-            <p>No list items yet.</p>
-          }
-          {
-            !isPending && lists && currentList.items &&
+      { isPending && <p>Loading...</p> }
+      {
+        !isPending && !lists &&
+        <p>No lists yet.</p>
+      }
+      {
+        !isPending && lists && !currentList.items &&
+        <p>No list items yet.</p>
+      }
+      {
+        !isPending && lists && currentList.items &&
         <ListView currentList={currentList} /> 
-          }
-      </div>
+      }
       { !isPending &&
         <div>
           <label>{(lists) ? 'Item Description': 'List Name'}</label>
           <input type="text" value={entry} onChange={(event) => setEntry(event.target.value)}/>
-          <button onClick={(lists) ? addListItem : addNewList }>Add { (lists) ? 'Item' : 'List' }</button>
+          <button onClick={ addNewList }>Add List</button>
         </div>
       }
     </>
