@@ -1,23 +1,82 @@
-function ListItem({ id, description }) {
+import axios from "axios";
+import { useState } from 'react';
 
-  function deleteListItem() {
-    axios.delete(`/api/v1/lists/${id}`)
+const ListItem = ({ description, dispatch, uuid, items, list }) => {
+  const [entry, setEntry] = useState(description);
+  const [isStatic, setIsStatic] = useState(true);
+  const [oldValue, setOldValue] = useState(description);
+
+  /**
+   * 
+   */
+  const deleteItem = () => {
+    axios.patch(
+      `/api/v1/lists/${list._id}`,
+      { items: items.filter((item) => item.uuid !== uuid) },
+    )
     .then((response) => {
       if (response.statusText === 'OK') {
-        axios('/api/v1/lists')
-        .then()
-        .catch((error) => console.error(error))
-      }})
+        dispatch({ payload: { uuid }, type: 'DELETE_ITEM' });
+      }
+    })
     .catch((error) => console.error(error));
-  }
+  };
+
+  /**
+   * 
+   */
+  const cancelChanges = () => {
+    setEntry(oldValue);
+    setIsStatic(true);
+  };
+
+  /**
+   * 
+   */
+  const editItem = () => {
+    setIsStatic(false);
+  };
+
+  /**
+   * 
+   */
+  const saveChanges = () => {
+    axios.patch(
+      `/api/v1/lists/${list._id}`,
+      { items: [
+        ...items.filter((item) => item.uuid !== uuid),
+        { uuid: uuid, description: entry }
+      ]}
+    )
+    .then((response) => {
+      if (response.statusText === 'OK') {
+        dispatch({ payload: { uuid, description: entry }, type: 'UPDATE_ITEM' });
+      }
+    })
+    .catch((error) => console.error(error.message))
+    .finally(() => {
+      setOldValue(entry);
+      setIsStatic(true);
+    });
+  };
   
   return (
     <>
-      <p>{description}</p>
-      <button>Edit</button>
-      <button onClick={deleteListItem}>Delete</button>
+      { isStatic ? (
+        <>
+          <p>{description}</p>
+          <button onClick={editItem}>Edit</button>
+          <button onClick={deleteItem}>Delete</button>
+        </>
+      ) : (
+        <>
+          <input type="text" value={entry} onChange={(event) => setEntry(event.target.value)}/>
+          <button onClick={saveChanges}>Save</button>
+          <button onClick={cancelChanges}>Cancel</button>
+        </>
+      )}
     </>
-  );
-}
+    )
+};
 
 export default ListItem;
