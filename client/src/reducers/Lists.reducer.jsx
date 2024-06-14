@@ -7,21 +7,14 @@
 export default (state, action) => {
   switch(action.type) {
     case 'SET_LISTS':
-      return {
-        lists: action.payload
-      };
+      return [action.payload];
     case 'CREATE_LIST':
-      return {
-        lists: [action.payload, ...state.lists]
-      };
+      return [action.payload, ...state];
     case 'DELETE_LIST':
-      return {
-        lists: state.lists.filter((list) => list._id !== action.payload._id)
-      };
+      return state.filter((list) => list._id !== action.payload._id);
     case 'UPDATE_LIST':
-      return {
-        lists: [action.payload, state.lists.filter((list) => list._id !== action.payload._id)]
-      };
+      console.log(state)
+      return [action.payload, ...state.filter((list) => list._id !== action.payload._id)];
     };
-    throw error(`Unknown action: ${action.type}`);
+    throw new Error(`Unknown action: ${action.type}`);
 };
