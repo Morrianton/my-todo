@@ -8,9 +8,9 @@ import {
 
 import ListsReducer from "../reducers/Lists.reducer";
 import ListItem from "../components/ListItem";
-import UserContext from "../contexts/User.context";
+import ListView from "../components/ListView";
 
-function TasksPage() {
+const TasksPage = () => {
   const user = useContext(UserContext);
   const [lists, dispatchForLists] = useReducer(ListsReducer, null);
   const [isPending, setIsPending] = useState(true);
@@ -68,8 +68,9 @@ function TasksPage() {
     })
     .catch((error) => {
       // toast pop-up
+      console.error(error.message);
     });
-  }
+  };
   
   return (
     <>
@@ -85,9 +86,7 @@ function TasksPage() {
           }
           {
             !isPending && lists && currentList.items &&
-            currentList.items.map((item) => {
-              return <ListItem key={item.id} id={currentList._id} description={item.description}></ListItem>
-            })
+        <ListView currentList={currentList} /> 
           }
       </div>
       { !isPending &&
@@ -99,6 +98,6 @@ function TasksPage() {
       }
     </>
   );
-}
+};
 
 export default TasksPage;
