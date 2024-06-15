@@ -16,7 +16,7 @@ import ListsReducer from "../reducers/Lists.reducer";
 
 // Components
 import ListView from "../components/ListView";
-import ListNav from "../components/ui/ListNav";
+import ListNav from "../components/ListNav";
 
 /**
  * Tasks page component.

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useContext } from 'react';
 
 // Contexts
-import ListsContext from '../../contexts/Lists.context';
+import ListsContext from '../contexts/Lists.context';
 
 /**
  * 
