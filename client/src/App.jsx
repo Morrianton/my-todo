@@ -13,6 +13,9 @@ import AuthReducer from "./reducers/Auth.reducer";
 import "./App.css";
 
 // Components
+import NavBar from "./components/ui/NavBar";
+
+// Pages
 import LoginPage from "./pages/Login.page";
 import SignupPage from "./pages/Signup.page";
 import TasksPage from "./pages/Tasks.page";
@@ -27,15 +30,18 @@ function App() {
   const [user, dispatchAuth] = useReducer(AuthReducer, null);
 
   return (
-    <AuthContext.Provider value={{ user, dispatchAuth }}>
-      <Router>
-        <Routes>
-            <Route path="/" element={ <TasksPage /> } />
-            <Route path="/login" element={ <LoginPage /> } />
-            <Route path="/signup" element={ <SignupPage /> } />
-        </Routes>
-      </Router>
-    </AuthContext.Provider>
+    <>
+      <AuthContext.Provider value={{ user, dispatchAuth }}>
+        <Router>
+          <NavBar />
+          <Routes>
+              <Route path="/" element={ <TasksPage /> } />
+              <Route path="/login" element={ <LoginPage /> } />
+              <Route path="/signup" element={ <SignupPage /> } />
+          </Routes>
+        </Router>
+      </AuthContext.Provider>
+    </>
   );
 }
 
