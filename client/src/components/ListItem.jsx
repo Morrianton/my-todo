@@ -1,4 +1,6 @@
+// Libraries
 import axios from "axios";
+// Contexts
 import { useState } from 'react';
 
 const ListItem = ({ description, dispatchItems, uuid, items, list }) => {

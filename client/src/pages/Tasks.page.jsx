@@ -6,11 +6,17 @@ import {
   useState,
 } from "react";
 
+// Contexts
+// Reducers
 import ListsReducer from "../reducers/Lists.reducer";
-import AuthContext from "../contexts/Auth.context";
+// Components
 import ListView from "../components/ListView";
 import ListNav from "../components/ui/ListNav";
 
+/**
+ * 
+ * @returns 
+ */
 const TasksPage = () => {
   const user = useContext(AuthContext);
   const [lists, dispatchLists] = useReducer(ListsReducer, []);

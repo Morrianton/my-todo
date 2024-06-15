@@ -1,9 +1,12 @@
+// Libraries
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useReducer, useState } from 'react';
 
+// Contexts
 import ItemsReducer from '../reducers/Items.reducer';
 
+// Components
 import ListItem from "./ListItem";
 
 const ListView = ({ currentList }) => {
