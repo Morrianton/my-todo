@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from 'react';
 
-const ListItem = ({ description, dispatch, uuid, items, list }) => {
+const ListItem = ({ description, dispatchItems, uuid, items, list }) => {
   const [entry, setEntry] = useState(description);
   const [isStatic, setIsStatic] = useState(true);
   const [oldValue, setOldValue] = useState(description);
@@ -16,7 +16,7 @@ const ListItem = ({ description, dispatch, uuid, items, list }) => {
     )
     .then((response) => {
       if (response.statusText === 'OK') {
-        dispatch({ payload: { uuid }, type: 'DELETE_ITEM' });
+        dispatchItems({ payload: { uuid }, type: 'DELETE_ITEM' });
       }
     })
     .catch((error) => console.error(error));
@@ -50,7 +50,7 @@ const ListItem = ({ description, dispatch, uuid, items, list }) => {
     )
     .then((response) => {
       if (response.statusText === 'OK') {
-        dispatch({ payload: { uuid, description: entry }, type: 'UPDATE_ITEM' });
+        dispatchItems({ payload: { uuid, description: entry }, type: 'UPDATE_ITEM' });
       }
     })
     .catch((error) => console.error(error.message))
