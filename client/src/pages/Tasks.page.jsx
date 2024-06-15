@@ -7,8 +7,12 @@ import {
 } from "react";
 
 // Contexts
+import AuthContext from "../contexts/Auth.context";
+import ListsContext from "../contexts/Lists.context";
+
 // Reducers
 import ListsReducer from "../reducers/Lists.reducer";
+
 // Components
 import ListView from "../components/ListView";
 import ListNav from "../components/ui/ListNav";
@@ -47,6 +51,12 @@ const TasksPage = () => {
     return () => abortController.abort();
   }, []);
 
+  useEffect(() => {
+    if (currentList.name) {
+      setCurrentList(lists.find((list) => list.name === currentList.name));
+    }
+  }, [lists]);
+
   const addNewList = () => {
     const listDetails = { name: entry, items: [], owner_id: user._id };
 
@@ -73,7 +83,7 @@ const TasksPage = () => {
   };
   
   return (
-    <>
+    <ListsContext.Provider value={{ lists, dispatchLists }}>
       { isPending && <p>Loading...</p> }
       {
         !isPending && !lists &&
@@ -88,7 +98,6 @@ const TasksPage = () => {
           <>
             <ListNav
               currentList={currentList}
-              lists={lists}
               selectList={selectList}
             />
             <ListView currentList={currentList} />
@@ -101,7 +110,7 @@ const TasksPage = () => {
           <button onClick={ addNewList }>Add List</button>
         </div>
       }
-    </>
+    </ListsContext.Provider>
   );
 };
 

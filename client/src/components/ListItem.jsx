@@ -1,9 +1,12 @@
 // Libraries
 import axios from "axios";
-// Contexts
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
-const ListItem = ({ description, dispatchItems, uuid, items, list }) => {
+// Contexts
+import ListsContext from "../contexts/Lists.context";
+
+const ListItem = ({ description, uuid, currentList }) => {
+  const { dispatchLists } = useContext(ListsContext);
   const [entry, setEntry] = useState(description);
   const [isStatic, setIsStatic] = useState(true);
   const [oldValue, setOldValue] = useState(description);
@@ -13,12 +16,18 @@ const ListItem = ({ description, dispatchItems, uuid, items, list }) => {
    */
   const deleteItem = () => {
     axios.patch(
-      `/api/v1/lists/${list._id}`,
-      { items: items.filter((item) => item.uuid !== uuid) },
+      `/api/v1/lists/${currentList._id}`,
+      { items: currentList.items.filter((item) => item.uuid !== uuid) },
     )
     .then((response) => {
       if (response.statusText === 'OK') {
-        dispatchItems({ payload: { uuid }, type: 'DELETE_ITEM' });
+        dispatchLists({
+          payload: {
+            ...currentList,
+            items: currentList.items.filter((item) => item.uuid !== uuid)
+          },
+          type: 'UPDATE_LIST',
+        });
       }
     })
     .catch((error) => console.error(error));
@@ -44,15 +53,21 @@ const ListItem = ({ description, dispatchItems, uuid, items, list }) => {
    */
   const saveChanges = () => {
     axios.patch(
-      `/api/v1/lists/${list._id}`,
+      `/api/v1/lists/${currentList._id}`,
       { items: [
-        ...items.filter((item) => item.uuid !== uuid),
+        ...currentList.items.filter((item) => item.uuid !== uuid),
         { uuid: uuid, description: entry }
       ]}
     )
     .then((response) => {
       if (response.statusText === 'OK') {
-        dispatchItems({ payload: { uuid, description: entry }, type: 'UPDATE_ITEM' });
+        dispatchLists({
+          payload: {
+            ...currentList,
+            items: [...currentList.items.filter((item) => item.uuid !== uuid), { uuid, description: entry }]
+          },
+          type: 'UPDATE_LIST'
+        });
       }
     })
     .catch((error) => console.error(error.message))

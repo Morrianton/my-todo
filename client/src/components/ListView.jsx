@@ -1,21 +1,17 @@
 // Libraries
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { useEffect, useReducer, useState } from 'react';
+import { useContext, useState } from 'react';
 
 // Contexts
-import ItemsReducer from '../reducers/Items.reducer';
+import ListsContext from '../contexts/Lists.context';
 
 // Components
 import ListItem from "./ListItem";
 
 const ListView = ({ currentList }) => {
-  const [items, dispatchItems] = useReducer(ItemsReducer, currentList.items);
+  const { dispatchLists } = useContext(ListsContext);
   const [entry, setEntry] = useState('');
-
-  useEffect(() => {
-    dispatchItems({ payload: currentList.items, type: 'SET_ITEMS' });
-  }, [currentList]);
 
   /**
    * 
@@ -27,14 +23,20 @@ const ListView = ({ currentList }) => {
     axios.patch(
       `/api/v1/lists/${currentList._id}`,
       { items: [
-        ...items,
+        ...currentList.items,
         { uuid: uuid, description: entry }
       ]}
     )
     .then((response) => {
       // toast pop-up
       if (response.statusText === 'OK') {
-        dispatchItems({ type: 'CREATE_ITEM', payload: { uuid: uuid, description: entry } });
+        dispatchLists({
+          type: 'UPDATE_LIST',
+          payload: {
+            ...currentList,
+            items: [...currentList.items, { uuid: uuid, description: entry }]
+          }
+        });
         setEntry('');
       }
     })
@@ -50,14 +52,13 @@ const ListView = ({ currentList }) => {
       <input type="text" value={entry} onChange={(event) => setEntry(event.target.value)} />
       <button onClick={ addListItem }>Add Item</button>
       {
-        items.map((item) => {
+        currentList.items.map((item) => {
           return <ListItem
             key={item.uuid}
             description={item.description}
-            dispatchItems={dispatchItems}
+            dispatchLists={dispatchLists}
             uuid={item.uuid}
-            items={items}
-            list={currentList}
+            currentList={currentList}
           ></ListItem>
         })
       }
