@@ -27,7 +27,7 @@ const ListItem = ({ description, uuid, currentList }) => {
   const deleteItem = () => {
     axios.patch(
       `/api/v1/lists/${currentList._id}`,
-      { items: currentList.items.filter((item) => item.uuid !== uuid) },
+      { items: currentList.items.filter((item) => item.uuid !== uuid) }
     )
     .then((response) => {
       if (response.statusText === 'OK') {
