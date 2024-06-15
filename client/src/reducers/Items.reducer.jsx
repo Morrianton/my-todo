@@ -4,6 +4,8 @@ export default (state, action) => {
       return [action.payload, ...state];
     case 'DELETE_ITEM':
       return state.filter((item) => item.uuid !== action.payload.uuid);
+    case 'SET_ITEMS':
+      return [...action.payload];
     case 'UPDATE_ITEM':
       return [action.payload, ...state.filter((item) => item.uuid !== action.payload.uuid)];
   }

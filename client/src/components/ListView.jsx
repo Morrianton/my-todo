@@ -1,13 +1,18 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { useReducer, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
+
+import ItemsReducer from '../reducers/Items.reducer';
 
 import ListItem from "./ListItem";
-import ItemsReducer from '../reducers/Items.reducer';
 
 const ListView = ({ currentList }) => {
   const [items, dispatchItems] = useReducer(ItemsReducer, currentList.items);
   const [entry, setEntry] = useState('');
+
+  useEffect(() => {
+    dispatchItems({ payload: currentList.items, type: 'SET_ITEMS' });
+  }, [currentList]);
 
   /**
    * 
@@ -25,7 +30,7 @@ const ListView = ({ currentList }) => {
     )
     .then((response) => {
       // toast pop-up
-      if (response.statusText === 'OK') {        
+      if (response.statusText === 'OK') {
         dispatchItems({ type: 'CREATE_ITEM', payload: { uuid: uuid, description: entry } });
         setEntry('');
       }
@@ -46,7 +51,7 @@ const ListView = ({ currentList }) => {
           return <ListItem
             key={item.uuid}
             description={item.description}
-            dispatch={dispatchItems}
+            dispatchItems={dispatchItems}
             uuid={item.uuid}
             items={items}
             list={currentList}

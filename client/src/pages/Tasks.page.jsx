@@ -9,10 +9,11 @@ import {
 import ListsReducer from "../reducers/Lists.reducer";
 import AuthContext from "../contexts/Auth.context";
 import ListView from "../components/ListView";
+import ListNav from "../components/ui/ListNav";
 
 const TasksPage = () => {
   const user = useContext(AuthContext);
-  const lists = useReducer(ListsReducer, []);
+  const [lists, dispatchLists] = useReducer(ListsReducer, []);
   const [isPending, setIsPending] = useState(true);
   const [currentList, setCurrentList] = useState({});
   const [entry, setEntry] = useState('');
@@ -23,6 +24,7 @@ const TasksPage = () => {
     axios('/api/v1/lists/', { signal: abortController.signal })
     .then((response) => {
       if (response.statusText === 'OK') {
+        dispatchLists({ payload: response.data, type: 'SET_LISTS' });
         setCurrentList(response.data[0]);
       }
       setIsPending(false);
@@ -56,6 +58,13 @@ const TasksPage = () => {
       console.error(error.message);
     });
   };
+
+  /**
+   * 
+   */
+  const selectList = (event) => {
+    setCurrentList(lists.find((list) => list.name === event.target.innerText));
+  };
   
   return (
     <>
@@ -69,12 +78,19 @@ const TasksPage = () => {
         <p>No list items yet.</p>
       }
       {
-        !isPending && lists && currentList.items &&
-        <ListView currentList={currentList} /> 
+        !isPending && lists && currentList.items && (
+          <>
+            <ListNav
+              currentList={currentList}
+              lists={lists}
+              selectList={selectList}
+            />
+            <ListView currentList={currentList} />
+          </>
+        )
       }
       { !isPending &&
         <div>
-          <label>{(lists) ? 'Item Description': 'List Name'}</label>
           <input type="text" value={entry} onChange={(event) => setEntry(event.target.value)}/>
           <button onClick={ addNewList }>Add List</button>
         </div>
