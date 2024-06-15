@@ -25,7 +25,7 @@ import ListNav from "../components/ListNav";
  * @returns {JSX.Element} The rendered tasks page component.
  */
 const TasksPage = () => {
-  const user = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [lists, dispatchLists] = useReducer(ListsReducer, []);
   const [isPending, setIsPending] = useState(true);
   const [currentList, setCurrentList] = useState({});
