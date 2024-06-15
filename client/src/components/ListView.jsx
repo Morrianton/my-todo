@@ -13,8 +13,8 @@ import ListItem from "./ListItem";
  * List view component.
  * 
  * @component
- * @param {Object} props       Properties used by the component.
- * @param {Object} currentList The current list being viewed. 
+ * @param {Object} props             Properties used by the component.
+ * @param {Object} props.currentList The current list being viewed. 
  * @returns {JSX.Element} The rendered list view component.
  */
 const ListView = ({ currentList }) => {

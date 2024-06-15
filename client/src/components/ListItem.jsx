@@ -9,10 +9,10 @@ import ListsContext from "../contexts/Lists.context";
  * List item component.
  * 
  * @component
- * @param {Object} props       Properties used by the component.
- * @param {string} description The list item description/name.
- * @param {string} uuid        Unique ID of the item.
- * @param {Object} currentList The current list being viewed.
+ * @param {Object} props             Properties used by the component.
+ * @param {string} props.description The list item description/name.
+ * @param {string} props.uuid        Unique ID of the item.
+ * @param {Object} props.currentList The current list being viewed.
  * @returns {JSX.Element} The rendered list item component.
  */
 const ListItem = ({ description, uuid, currentList }) => {
