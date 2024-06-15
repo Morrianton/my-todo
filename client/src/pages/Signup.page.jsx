@@ -1,9 +1,20 @@
+// Libraries
 import { useState } from "react";
 
+/**
+ * Signup page component.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered signup page component.
+ */
 const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  /**
+   * TODO
+   * @param {Event} event TODO
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
   };

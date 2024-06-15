@@ -5,6 +5,16 @@ import { useContext, useState } from 'react';
 // Contexts
 import ListsContext from "../contexts/Lists.context";
 
+/**
+ * List item component.
+ * 
+ * @component
+ * @param {Object} props       Properties used by the component.
+ * @param {string} description The list item description/name.
+ * @param {string} uuid        Unique ID of the item.
+ * @param {Object} currentList The current list being viewed.
+ * @returns {JSX.Element} The rendered list item component.
+ */
 const ListItem = ({ description, uuid, currentList }) => {
   const { dispatchLists } = useContext(ListsContext);
   const [entry, setEntry] = useState(description);
@@ -12,7 +22,7 @@ const ListItem = ({ description, uuid, currentList }) => {
   const [oldValue, setOldValue] = useState(description);
 
   /**
-   * 
+   * Deletes the item from the list in the database and state.
    */
   const deleteItem = () => {
     axios.patch(
@@ -34,7 +44,7 @@ const ListItem = ({ description, uuid, currentList }) => {
   };
 
   /**
-   * 
+   * Cancels changes to the item.
    */
   const cancelChanges = () => {
     setEntry(oldValue);
@@ -42,14 +52,14 @@ const ListItem = ({ description, uuid, currentList }) => {
   };
 
   /**
-   * 
+   * Initiates item editing.
    */
   const editItem = () => {
     setIsStatic(false);
   };
 
   /**
-   * 
+   * Saves changes to the item in the list in the database and state.
    */
   const saveChanges = () => {
     axios.patch(
@@ -93,7 +103,7 @@ const ListItem = ({ description, uuid, currentList }) => {
         </>
       )}
     </>
-    )
+  );
 };
 
 export default ListItem;

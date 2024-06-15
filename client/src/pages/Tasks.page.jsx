@@ -1,3 +1,4 @@
+// Libraries
 import axios from "axios";
 import {
   useContext,
@@ -18,8 +19,10 @@ import ListView from "../components/ListView";
 import ListNav from "../components/ui/ListNav";
 
 /**
+ * Tasks page component.
  * 
- * @returns 
+ * @component
+ * @returns {JSX.Element} The rendered tasks page component.
  */
 const TasksPage = () => {
   const user = useContext(AuthContext);
@@ -57,6 +60,9 @@ const TasksPage = () => {
     }
   }, [lists]);
 
+  /**
+   * Adds a new list to the database and updates the lists state.
+   */
   const addNewList = () => {
     const listDetails = { name: entry, items: [], owner_id: user._id };
 
@@ -76,7 +82,8 @@ const TasksPage = () => {
   };
 
   /**
-   * 
+   * Selects the list to be viewed.
+   * @param {Event} event The event object used to target the inner text of the button it is attached to.
    */
   const selectList = (event) => {
     setCurrentList(lists.find((list) => list.name === event.target.innerText));

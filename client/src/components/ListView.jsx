@@ -9,13 +9,20 @@ import ListsContext from '../contexts/Lists.context';
 // Components
 import ListItem from "./ListItem";
 
+/**
+ * List view component.
+ * 
+ * @component
+ * @param {Object} props       Properties used by the component.
+ * @param {Object} currentList The current list being viewed. 
+ * @returns {JSX.Element} The rendered list view component.
+ */
 const ListView = ({ currentList }) => {
   const { dispatchLists } = useContext(ListsContext);
   const [entry, setEntry] = useState('');
 
   /**
-   * 
-   * @param {*} entry 
+   * Adds a new item to the list in the database and state.
    */
   const addListItem = () => {
     const uuid = uuidv4();
