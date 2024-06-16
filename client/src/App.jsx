@@ -1,6 +1,6 @@
 
 // Libraries
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 // Contexts
@@ -28,6 +28,17 @@ import TasksPage from "./pages/Tasks.page";
  */
 function App() {
   const [user, dispatchAuth] = useReducer(AuthReducer, null);
+
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+
+    if (loggedInUser) {
+      dispatchAuth({
+        payload: JSON.parse(localStorage.getItem('user')),
+        type: 'LOG_IN',
+      });
+    }
+  }, []);
 
   return (
     <>
