@@ -1,5 +1,9 @@
 // Libraries
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+
+// Contexts
+import AuthContext from "../../contexts/Auth.context";
 
 /**
  * Navigation bar component.
@@ -8,14 +12,35 @@ import { Link } from "react-router-dom";
  * @returns {React.JSX.Element} The nav bar component to render.
  */
 const NavBar = () => {
+  const { user, dispatchAuth } = useContext(AuthContext);
+
+  /**
+   * Logs the user out of the app by removing their user data from state and local storage.
+   */
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    dispatchAuth({ type: 'LOG_OUT' });
+  };
+
   return (
     <header>
       <Link to="/">
         <h1>My To-dos</h1>
       </Link>
       <nav>
-        <Link to="/login">Log in</Link>
-        <Link to="/signup">Sign up</Link>
+        {
+          (user) ? (
+            <>
+              <span>Hello {user.email}!</span>
+              <Link to="/login" onClick={handleLogout}>Log out</Link>
+            </>
+           ) : (
+            <>
+              <Link to="/login">Log in</Link>
+              <Link to="/signup">Sign up</Link>
+            </>
+          )
+        }
       </nav>
     </header>
   );
