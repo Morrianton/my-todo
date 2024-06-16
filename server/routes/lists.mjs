@@ -1,4 +1,6 @@
+// Libraries
 import express from 'express';
+import requireAuth from '../middleware/requireAuth.mjs';
 
 import {
   createList,
@@ -9,6 +11,9 @@ import {
 } from '../controllers/listController.mjs';
 
 const router = express.Router();
+
+// Requires authorization for all list routes
+router.use(requireAuth);
 
 // GET all lists for a user
 router.get('/', getLists);
