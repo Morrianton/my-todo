@@ -7,9 +7,9 @@
 export default (state, action) => {
   switch(action.type) {
     case 'LOG_IN':
-      return { user: action.payload };
+      return action.payload;
     case 'LOG_OUT':
-      return { user: null };
+      return null;
   };
   throw error(`Unknown action: ${action.type}`);
 }
