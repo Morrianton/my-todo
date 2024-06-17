@@ -1,7 +1,7 @@
 
 // Libraries
 import { useEffect, useReducer } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Navigate, BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 // Contexts
 import AuthContext from "./contexts/Auth.context";
@@ -26,7 +26,7 @@ import TasksPage from "./pages/Tasks.page";
  * @component
  * @returns {JSX.element} The rendered root/app component.
  */
-function App() {
+const App = () => {
   const [user, dispatchAuth] = useReducer(AuthReducer, null);
 
   useEffect(() => {
@@ -46,14 +46,14 @@ function App() {
         <Router>
           <NavBar />
           <Routes>
-              <Route path="/" element={ <TasksPage /> } />
-              <Route path="/login" element={ <LoginPage /> } />
-              <Route path="/signup" element={ <SignupPage /> } />
+              <Route path="/" element={(user) ? <TasksPage /> : <Navigate to="/login" />} />
+              <Route path="/login" element={(!user) ? <LoginPage /> : <Navigate to="/" />} />
+              <Route path="/signup" element={(!user) ? <SignupPage /> : <Navigate to="/" />} />
           </Routes>
         </Router>
       </AuthContext.Provider>
     </>
   );
-}
+};
 
 export default App;
