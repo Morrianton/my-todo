@@ -24,7 +24,6 @@ const LoginPage = () => {
    */
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     setIsLoading(true);
     setError(null);
 
