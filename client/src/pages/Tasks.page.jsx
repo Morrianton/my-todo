@@ -30,29 +30,37 @@ const TasksPage = () => {
   const [isPending, setIsPending] = useState(true);
   const [currentList, setCurrentList] = useState({});
   const [entry, setEntry] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(!!user);
   
   useEffect(() => {
     const abortController = new AbortController();
 
-    axios('/api/v1/lists/', { signal: abortController.signal })
-    .then((response) => {
-      if (response.statusText === 'OK') {
-        dispatchLists({ payload: response.data, type: 'SET_LISTS' });
-        setCurrentList(response.data[0]);
-      }
+    if (user) {
+      axios('/api/v1/lists/', {
+        headers: { Authorization: `Bearer ${user.token}` },
+        signal: abortController.signal,
+      })
+      .then((response) => {
+        if (response.statusText === 'OK') {
+          dispatchLists({ payload: response.data, type: 'SET_LISTS' });
+          setCurrentList(response.data[0]);
+          setIsLoggedIn(true);
+        }
+      })
+      .catch((error) => {
+        if (error.name === 'AbortError') {
+          console.log('Fetch aborted');
+        } else {
+          console.error(error)
+        }
+      })
+      .finally(() => setIsPending(false));
+  
+      return () => abortController.abort();
+    } else {
       setIsPending(false);
-    })
-    .catch((error) => {
-      if (error.name === 'AbortError') {
-        console.log('Fetch aborted');
-      } else {
-        setIsPending(false);
-        console.error(error)
-      }
-    });
-
-    return () => abortController.abort();
-  }, []);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (currentList.name) {
@@ -66,7 +74,11 @@ const TasksPage = () => {
   const addNewList = () => {
     const listDetails = { name: entry, items: [], owner_id: user._id };
 
-    axios(`/api/v1/lists/`, listDetails)
+    axios(
+      `/api/v1/lists/`,
+      listDetails,
+      { headers: { Authorization: `Bearer ${user.token}` } }
+    )
     .then((response) => {
       // toast pop-up
       if (response.statusText === 'OK') {
@@ -93,15 +105,15 @@ const TasksPage = () => {
     <ListsContext.Provider value={{ lists, dispatchLists }}>
       { isPending && <p>Loading...</p> }
       {
-        !isPending && !lists &&
+        !isPending && isLoggedIn && !lists &&
         <p>No lists yet.</p>
       }
       {
-        !isPending && lists && !currentList.items &&
+        !isPending && isLoggedIn && lists && !currentList.items &&
         <p>No list items yet.</p>
       }
       {
-        !isPending && lists && currentList.items && (
+        !isPending && isLoggedIn && lists && currentList.items && (
           <>
             <ListNav
               currentList={currentList}
@@ -111,12 +123,13 @@ const TasksPage = () => {
           </>
         )
       }
-      { !isPending &&
-        <div>
+      { !isPending && isLoggedIn && (
+        <>
           <input type="text" value={entry} onChange={(event) => setEntry(event.target.value)}/>
           <button onClick={ addNewList }>Add List</button>
-        </div>
-      }
+        </>
+      )}
+      { !isPending && !isLoggedIn && <p>Log in or sign up to get started!</p>}
     </ListsContext.Provider>
   );
 };

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useContext, useState } from 'react';
 
 // Contexts
+import AuthContext from "../contexts/Auth.context";
 import ListsContext from "../contexts/Lists.context";
 
 /**
@@ -17,6 +18,7 @@ import ListsContext from "../contexts/Lists.context";
  */
 const ListItem = ({ description, uuid, currentList }) => {
   const { dispatchLists } = useContext(ListsContext);
+  const { user } = useContext(AuthContext);
   const [entry, setEntry] = useState(description);
   const [isStatic, setIsStatic] = useState(true);
   const [oldValue, setOldValue] = useState(description);
@@ -27,7 +29,8 @@ const ListItem = ({ description, uuid, currentList }) => {
   const deleteItem = () => {
     axios.patch(
       `/api/v1/lists/${currentList._id}`,
-      { items: currentList.items.filter((item) => item.uuid !== uuid) }
+      { items: currentList.items.filter((item) => item.uuid !== uuid) },
+      { headers: { Authorization: `Bearer ${user.token}` } }
     )
     .then((response) => {
       if (response.statusText === 'OK') {
@@ -67,7 +70,8 @@ const ListItem = ({ description, uuid, currentList }) => {
       { items: [
         ...currentList.items.filter((item) => item.uuid !== uuid),
         { uuid: uuid, description: entry }
-      ]}
+      ]},
+      { headers: { Authorization: `Bearer ${user.token}` } }
     )
     .then((response) => {
       if (response.statusText === 'OK') {

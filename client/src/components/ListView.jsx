@@ -7,6 +7,7 @@ import { useContext, useState } from 'react';
 import ListsContext from '../contexts/Lists.context';
 
 // Components
+import AuthContext from '../contexts/Auth.context';
 import ListItem from "./ListItem";
 
 /**
@@ -19,6 +20,7 @@ import ListItem from "./ListItem";
  */
 const ListView = ({ currentList }) => {
   const { dispatchLists } = useContext(ListsContext);
+  const { user } = useContext(AuthContext);
   const [entry, setEntry] = useState('');
 
   /**
@@ -32,7 +34,8 @@ const ListView = ({ currentList }) => {
       { items: [
         ...currentList.items,
         { uuid: uuid, description: entry }
-      ]}
+      ]},
+      { headers: { Authorization: `Bearer ${user.token}` } }
     )
     .then((response) => {
       // toast pop-up
