@@ -7,8 +7,10 @@ import List from '../models/listModel.mjs';
  * @param {Response} res Response object.
  */
 export const getLists = async (req, res) => {
+  const userId = req.user._id;
+
   try {
-    const lists = await List.find({}).sort({ createdAt: -1 });
+    const lists = await List.find({ owner_id: userId }).sort({ createdAt: -1 });
 
     if (!lists) {
       return res.status(404).json({ error: 'No lists found for this user.'});
@@ -51,10 +53,11 @@ export const getList = async (req, res) => {
  * @param {Response} res Response object.
  */
 export const createList = async (req, res) => {
-  const { name, items, owner_id } = req.body;
+  const { name, items } = req.body;
+  const userId = req.user._id;
 
   try {
-    const list = await List.create({ name, items, owner_id });
+    const list = await List.create({ name, items, owner_id: userId });
     res.status(200).json(list);
   } catch (error) {
     res.status(400).json({ error: error.message })

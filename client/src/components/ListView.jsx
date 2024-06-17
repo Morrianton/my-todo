@@ -58,20 +58,22 @@ const ListView = ({ currentList }) => {
   
   return (
     <>
-      <p>{ currentList.name }</p>
-      <input type="text" value={entry} onChange={(event) => setEntry(event.target.value)} />
-      <button onClick={ addListItem }>Add Item</button>
+      <p>{currentList.name}</p>
       {
-        currentList.items.map((item) => {
-          return <ListItem
+        (currentList.items.length > 0) ? (
+          currentList.items.map((item) => {
+            return <ListItem
             key={item.uuid}
             description={item.description}
             dispatchLists={dispatchLists}
             uuid={item.uuid}
             currentList={currentList}
-          ></ListItem>
-        })
+            ></ListItem>
+          })
+        ) : <p>No list items yet.</p>
       }
+      <input type="text" value={entry} onChange={(event) => setEntry(event.target.value)} />
+      <button onClick={addListItem}>Add Item</button>
     </>
   );
 };

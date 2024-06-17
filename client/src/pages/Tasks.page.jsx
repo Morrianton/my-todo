@@ -28,7 +28,7 @@ const TasksPage = () => {
   const { user } = useContext(AuthContext);
   const [lists, dispatchLists] = useReducer(ListsReducer, []);
   const [isPending, setIsPending] = useState(true);
-  const [currentList, setCurrentList] = useState({});
+  const [currentList, setCurrentList] = useState(null);
   const [entry, setEntry] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(!!user);
   
@@ -63,7 +63,7 @@ const TasksPage = () => {
   }, [user]);
 
   useEffect(() => {
-    if (currentList.name) {
+    if (currentList && currentList.name) {
       setCurrentList(lists.find((list) => list.name === currentList.name));
     }
   }, [lists]);
@@ -72,9 +72,9 @@ const TasksPage = () => {
    * Adds a new list to the database and updates the lists state.
    */
   const addNewList = () => {
-    const listDetails = { name: entry, items: [], owner_id: user._id };
+    const listDetails = { name: entry, items: [] };
 
-    axios(
+    axios.post(
       `/api/v1/lists/`,
       listDetails,
       { headers: { Authorization: `Bearer ${user.token}` } }
@@ -82,8 +82,8 @@ const TasksPage = () => {
     .then((response) => {
       // toast pop-up
       if (response.statusText === 'OK') {
-        dispatchLists({ type: 'CREATE_LIST', payload: listDetails });
-        setCurrentList(listDetails);
+        dispatchLists({ payload: response.data, type: 'CREATE_LIST' });
+        setCurrentList(response.data);
         setEntry('');
       }
     })
@@ -105,15 +105,11 @@ const TasksPage = () => {
     <ListsContext.Provider value={{ lists, dispatchLists }}>
       { isPending && <p>Loading...</p> }
       {
-        !isPending && isLoggedIn && !lists &&
+        !isPending && isLoggedIn && lists.length === 0 &&
         <p>No lists yet.</p>
       }
       {
-        !isPending && isLoggedIn && lists && !currentList.items &&
-        <p>No list items yet.</p>
-      }
-      {
-        !isPending && isLoggedIn && lists && currentList.items && (
+        !isPending && isLoggedIn && lists.length > 0 && currentList && (
           <>
             <ListNav
               currentList={currentList}
@@ -126,7 +122,7 @@ const TasksPage = () => {
       { !isPending && isLoggedIn && (
         <>
           <input type="text" value={entry} onChange={(event) => setEntry(event.target.value)}/>
-          <button onClick={ addNewList }>Add List</button>
+          <button onClick={addNewList}>Add List</button>
         </>
       )}
       { !isPending && !isLoggedIn && <p>Log in or sign up to get started!</p>}
