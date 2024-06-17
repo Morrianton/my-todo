@@ -4,6 +4,7 @@ import { useContext } from "react";
 
 // Contexts
 import AuthContext from "../../contexts/Auth.context";
+import ListsContext from "../../contexts/Lists.context";
 
 /**
  * Navigation bar component.
@@ -12,6 +13,7 @@ import AuthContext from "../../contexts/Auth.context";
  * @returns {React.JSX.Element} The nav bar component to render.
  */
 const NavBar = () => {
+  const { dispatchLists } = useContext(ListsContext);
   const { user, dispatchAuth } = useContext(AuthContext);
 
   /**
@@ -19,6 +21,7 @@ const NavBar = () => {
    */
   const handleLogout = () => {
     localStorage.removeItem('user');
+    dispatchLists({ payload: null, type: 'SET_LISTS'});
     dispatchAuth({ type: 'LOG_OUT' });
   };
 
