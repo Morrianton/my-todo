@@ -69,7 +69,7 @@ const ListView = ({ currentList }) => {
       )
       .then((response) => {
         if (response.statusText === 'OK') {
-          dispatchLists({ payload: currentList._id, type: 'DELETE_LIST' });
+          dispatchLists({ payload: currentList, type: 'DELETE_LIST' });
         }
       })
       .catch((error) => console.error(error.message));
