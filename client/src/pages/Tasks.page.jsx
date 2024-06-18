@@ -63,8 +63,12 @@ const TasksPage = () => {
   }, [user]);
 
   useEffect(() => {
+    // refreshes list view after changes to current list
     if (currentList && currentList.name) {
       setCurrentList(lists.find((list) => list.name === currentList.name));
+    }
+    if (lists.length) {
+      setCurrentList(lists[0]);
     }
   }, [lists]);
 

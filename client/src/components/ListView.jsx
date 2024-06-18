@@ -55,6 +55,26 @@ const ListView = ({ currentList }) => {
       console.error(error.message);
     });
   };
+
+  /**
+   * Deletes the current list if user confirms.
+   */
+  const deleteList = () => {
+    const acceptsDeletion = window.confirm(`Are you sure you want to delete the ${currentList.name} list?`);
+
+    if (acceptsDeletion) {
+      axios.delete(
+        `/api/v1/lists/${currentList._id}`,
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      )
+      .then((response) => {
+        if (response.statusText === 'OK') {
+          dispatchLists({ payload: currentList, type: 'DELETE_LIST' });
+        }
+      })
+      .catch((error) => console.error(error.message));
+    }
+  };
   
   return (
     <>
