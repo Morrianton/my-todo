@@ -79,7 +79,6 @@ const ListView = ({ currentList }) => {
   return (
     <>
       <p>{currentList.name}</p>
-      <button onClick={deleteList}>Delete List</button>
       {
         (currentList.items.length > 0) ? (
           currentList.items.map((item) => {
