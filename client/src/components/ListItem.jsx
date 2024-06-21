@@ -82,11 +82,11 @@ const ListItem = ({ description, uuid, currentList }) => {
           },
           type: 'UPDATE_LIST'
         });
+        setOldValue(entry);
       }
     })
     .catch((error) => console.error(error.message))
     .finally(() => {
-      setOldValue(entry);
       setIsStatic(true);
     });
   };
