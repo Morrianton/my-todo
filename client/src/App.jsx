@@ -16,6 +16,7 @@ import "./App.css";
 import NavBar from "./components/ui/NavBar";
 
 // Pages
+import AccountSettingsPage from "./pages/AccountSettings.page";
 import LoginPage from "./pages/Login.page";
 import SignupPage from "./pages/Signup.page";
 import TasksPage from "./pages/Tasks.page";
@@ -47,6 +48,7 @@ const App = () => {
           <NavBar />
           <Routes>
               <Route path="/" element={(user) ? <TasksPage /> : <Navigate to="/login" />} />
+              <Route path="settings" element={(user) ? <AccountSettingsPage /> : <Navigate to="/login" />} />
               <Route path="/login" element={(!user) ? <LoginPage /> : <Navigate to="/" />} />
               <Route path="/signup" element={(!user) ? <SignupPage /> : <Navigate to="/" />} />
           </Routes>
