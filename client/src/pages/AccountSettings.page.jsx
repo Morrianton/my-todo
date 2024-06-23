@@ -21,6 +21,15 @@ const AccountSettingsPage = () => {
       <h1>Account Settings</h1>
       <h2>Social</h2>
       <form action={sendInvitation}>
+        <label>
+          recipient's email
+          <input
+            onChange={(event) => setEntry(event.target.value)}
+            placeholder="genie@ofthelamp.net"
+            type="email"
+            value={entry}
+          />
+        </label>
         <button type="submit">Send</button>
         { error && <p>{error}</p> }
       </form>
