@@ -35,6 +35,7 @@ const NavBar = () => {
           (user) ? (
             <>
               <span>Hello {user.email}!</span>
+              <Link to="/settings">Account Settings</Link>
               <Link to="/login" onClick={handleLogout}>Log out</Link>
             </>
            ) : (
