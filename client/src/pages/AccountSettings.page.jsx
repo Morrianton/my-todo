@@ -11,7 +11,7 @@ const AccountSettingsPage = () => {
   /**
    * 
    */
-  const handleSubmit = (event) => {
+  const sendInvitation = (event) => {
     event.preventDefault();
     // send off email
   };
@@ -20,9 +20,7 @@ const AccountSettingsPage = () => {
     <>
       <h1>Account Settings</h1>
       <h2>Social</h2>
-      <form onSubmit={handleSubmit}>
-        <label for="invitee-email" >recipient's email</label>
-        <input name="invitee-email" onChange={(event) => setEntry(event.target.value)} type="email" value={entry}/>
+      <form action={sendInvitation}>
         <button type="submit">Send</button>
         { error && <p>{error}</p> }
       </form>
