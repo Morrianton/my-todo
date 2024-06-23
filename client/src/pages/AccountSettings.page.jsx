@@ -6,6 +6,7 @@ import { useState } from "react";
  */
 const AccountSettingsPage = () => {
   const [entry, setEntry] = useState('');
+  const [error, setError] = useState(null);
 
   /**
    * 
