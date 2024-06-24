@@ -28,7 +28,7 @@ const NavBar = () => {
   return (
     <header>
       <Link to="/">
-        <h1>My To-dos</h1>
+        <h1>My To-do</h1>
       </Link>
       <nav>
         {
