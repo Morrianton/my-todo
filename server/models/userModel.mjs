@@ -18,15 +18,15 @@ const userSchema = new Schema({
 
  // static login method
  userSchema.statics.logIn = async function (email, password) {
-  if (!email || !password) throw Error('All fields must be filled.')
+  if (!email || !password) throw new Error('All fields must be filled.')
     
   const user = await this.findOne({ email });
 
-  if (!user) throw Error('Incorrect email.');
+  if (!user) throw new Error('Incorrect email.');
 
   const isMatch = await argon2.verify(user.password, password);
 
-  if (!isMatch) throw Error('Incorrect password.');
+  if (!isMatch) throw new Error('Incorrect password.');
 
   return user;
  }
