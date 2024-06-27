@@ -51,14 +51,10 @@ export const signUpUser = async (req, res) => {
  * @param {Response} res Response object.
  */
 export const getUser = async (req, res) => {
-  const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ error: 'User ID is invalid.' });
-  }
+  const { userId } = req.user._id;
 
   try {
-    const user = await User.findById(id);
+    const user = await User.findById({ _id: userId });
 
     if (!user) {
       return res.status(404).json({ error: 'User not found.'});
@@ -93,14 +89,10 @@ export const getUsers = async (req, res) => {
  * @param {Response} res Response object.
  */
 export const deleteUser = async (req, res) => {
-  const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ error: 'User ID is invalid.'});
-  }
+  const { userId } = req.user._id;
 
   try {
-    const deletedUser = await User.findOneAndDelete({ _id: id });
+    const deletedUser = await User.findOneAndDelete({ _id: userId });
 
     if (!deleteUser) return res.status(404).json({ error: 'User not found.'});
 
@@ -116,14 +108,10 @@ export const deleteUser = async (req, res) => {
  * @param {Response} res Response object.
  */
 export const updateCompleted = async (req, res) => {
-  const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ error: 'User ID is invalid.' });
-  }
+  const { userId } = req.user._id;
 
   try {
-    const updatedUser = await User.findOneAndUpdate({ _id: id }, { ...req.body });
+    const updatedUser = await User.findOneAndUpdate({ _id: userId }, { ...req.body });
 
     if (!updatedUser) {
       return res.status(404).json({ error: 'User not found' });
