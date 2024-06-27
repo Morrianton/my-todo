@@ -1,4 +1,5 @@
 import express from 'express';
+import requireAuth from '../middleware/requireAuth.mjs';
 
 import {
   deleteUser,
@@ -10,7 +11,7 @@ import {
 
 const router = express.Router();
 
-router.get('/', getUser);
+router.get('/', requireAuth, getUser);
 
 // POST a login request
 router.post('/login', logInUser);
@@ -19,9 +20,9 @@ router.post('/login', logInUser);
 router.post('/signup', signUpUser);
 
 // DELETE a user
-router.delete('/', deleteUser);
+router.delete('/', requireAuth, deleteUser);
 
 // PATCH a user's completed tasks list
-router.patch('/', updateCompleted);
+router.patch('/', requireAuth, updateCompleted);
 
 export default router;

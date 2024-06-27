@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
 
 import User from "../models/userModel.mjs";
 
@@ -51,7 +50,7 @@ export const signUpUser = async (req, res) => {
  * @param {Response} res Response object.
  */
 export const getUser = async (req, res) => {
-  const { userId } = req.user._id;
+  const userId = req.user._id;
 
   try {
     const user = await User.findById({ _id: userId });
@@ -89,7 +88,7 @@ export const getUsers = async (req, res) => {
  * @param {Response} res Response object.
  */
 export const deleteUser = async (req, res) => {
-  const { userId } = req.user._id;
+  const userId = req.user._id;
 
   try {
     const deletedUser = await User.findOneAndDelete({ _id: userId });
@@ -108,7 +107,7 @@ export const deleteUser = async (req, res) => {
  * @param {Response} res Response object.
  */
 export const updateCompleted = async (req, res) => {
-  const { userId } = req.user._id;
+  const userId = req.user._id;
 
   try {
     const updatedUser = await User.findOneAndUpdate({ _id: userId }, { ...req.body });
