@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import "./loadEnvironment.mjs";
 
 import listRoutes from "./routes/lists.mjs";
+import settingRoutes from "./routes/settings.mjs";
 import userRoutes from "./routes/user.mjs";
 import usersRoutes from "./routes/users.mjs";
 
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 });
 app.use(bodyParser.json());
 app.use('/api/v1/lists', listRoutes);
+app.use('/api/v1/settings', settingRoutes);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/users', usersRoutes);
 
