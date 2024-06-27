@@ -96,7 +96,7 @@ export const deleteUser = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ error: 'User ID is invalid.'})
+    return res.status(400).json({ error: 'User ID is invalid.'});
   }
 
   try {
@@ -108,4 +108,29 @@ export const deleteUser = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-}
+};
+
+/**
+ * Updates a single user's completed tasks list.
+ * @param {Request}  req Request object.
+ * @param {Response} res Response object.
+ */
+export const updateCompleted = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: 'User ID is invalid.' });
+  }
+
+  try {
+    const updatedUser = await User.findOneAndUpdate({ _id: id }, { ...req.body });
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ updatedUser });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};

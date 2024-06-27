@@ -14,6 +14,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  completed: {
+    type: Array,
+    required: true,
+  },
  }, { timestamps: true });
 
  // static login method
