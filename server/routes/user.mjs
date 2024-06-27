@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.get('/:id', getUser);
+router.get('/', getUser);
 
 // POST a login request
 router.post('/login', logInUser);
@@ -19,9 +19,9 @@ router.post('/login', logInUser);
 router.post('/signup', signUpUser);
 
 // DELETE a user
-router.delete('/:id', deleteUser);
+router.delete('/', deleteUser);
 
 // PATCH a user's completed tasks list
-router.patch('/:id', updateCompleted);
+router.patch('/', updateCompleted);
 
 export default router;
