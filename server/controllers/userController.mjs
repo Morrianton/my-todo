@@ -53,7 +53,7 @@ export const getUser = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    const user = await User.findById({ _id: userId }).select('email -_id');
+    const user = await User.findById({ _id: userId }).select('email completed settings -_id');
 
     if (!user) {
       return res.status(404).json({ error: 'User not found.'});
