@@ -16,6 +16,7 @@ export default async (req, res, next) => {
     return res.status(401).json({ error: 'Authorization token required' });
   }
   
+  // removes "Bearer " from the authorization property
   const token = authorization.split(' ')[1];
 
   try {
