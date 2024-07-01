@@ -53,7 +53,7 @@ export const getUser = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    const user = await User.findById({ _id: userId });
+    const user = await User.findById({ _id: userId }).select('email -_id');
 
     if (!user) {
       return res.status(404).json({ error: 'User not found.'});
@@ -72,7 +72,7 @@ export const getUser = async (req, res) => {
  */
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find({}).sort({ createdAt: -1 });
+    const users = await User.find({}).select('email completed settings -_id').sort({ createdAt: -1 });
 
     if (!users) return res.status(404).json({ error: 'No users were found.'});
 
