@@ -1,4 +1,8 @@
+// Libraries
 import mongoose from "mongoose";
+
+// Subdocuments
+import listItemSchema from "./subdocuments/listItem.mjs";
 
 const Schema = mongoose.Schema;
 
@@ -8,8 +12,9 @@ const listSchema = new Schema({
     required: true,
   },
   items: {
-    type: Array,
+    type: [listItemSchema],
     required: true,
+    default: () => ([]),
   },
   owner_id: {
     type: String,
