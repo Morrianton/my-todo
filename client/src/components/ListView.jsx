@@ -1,6 +1,5 @@
 // Libraries
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
 import { useContext, useState } from 'react';
 
 // Contexts
@@ -27,7 +26,6 @@ const ListView = ({ currentList }) => {
    * Adds a new item to the list in the database and state.
    */
   const addListItem = () => {
-    const uuid = uuidv4();
 
     axios.patch(
       `/api/v1/lists/${currentList._id}`,
@@ -79,22 +77,27 @@ const ListView = ({ currentList }) => {
   return (
     <>
       <p>{currentList.name}</p>
-      <button onClick={deleteList}>Delete List</button>
+      {(currentList.name !== 'completed') && <button onClick={deleteList}>Delete List</button>}
       {
         (currentList.items.length > 0) ? (
           currentList.items.map((item) => {
             return <ListItem
               key={item._id}
               description={item.description}
-            dispatchLists={dispatchLists}
+              dispatchLists={dispatchLists}
               _id={item._id}
               currentList={currentList}
-            ></ListItem>
+            ></ListItem>;
           })
         ) : <p>No list items yet.</p>
       }
-      <input type="text" value={entry} onChange={(event) => setEntry(event.target.value)} />
-      <button onClick={addListItem}>Add Item</button>
+      {
+        (currentList.name !== 'completed') &&
+          <>
+            <input type="text" value={entry} onChange={(event) => setEntry(event.target.value)} />
+            <button onClick={addListItem}>Add Item</button>
+          </>
+      }
     </>
   );
 };
