@@ -36,15 +36,28 @@ const TasksPage = () => {
     const abortController = new AbortController();
 
     if (user) {
-      axios('/api/v1/lists/', {
-        headers: { Authorization: `Bearer ${user.token}` },
-        signal: abortController.signal,
-      })
-      .then((response) => {
-        if (response.statusText === 'OK') {
-          dispatchLists({ payload: response.data, type: 'SET_LISTS' });
-          setCurrentList(response.data[0]);
-          setIsLoggedIn(true);
+      axios.get(
+        '/api/v1/lists/',
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+          signal: abortController.signal,
+        }
+      )
+      .then((listsResponse) => {
+        if (listsResponse.statusText === 'OK') {
+          axios.get(
+            '/api/v1/user',
+            { headers: { Authorization: `Bearer ${user.token}` } }
+          )
+          .then((userResponse) => {
+            if (userResponse.statusText === 'OK') {
+              // add completed list to the lists
+              dispatchLists({ payload: [userResponse.data.completed, ...listsResponse.data], type: 'SET_LISTS' });
+              setCurrentList(userResponse.data.completed);
+              setIsLoggedIn(true);
+            }
+          })
+          .catch((error) => console.error(error.message));
         }
       })
       .catch((error) => {
@@ -55,7 +68,7 @@ const TasksPage = () => {
         }
       })
       .finally(() => setIsPending(false));
-  
+
       return () => abortController.abort();
     } else {
       setIsPending(false);
