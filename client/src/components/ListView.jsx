@@ -33,7 +33,7 @@ const ListView = ({ currentList }) => {
       `/api/v1/lists/${currentList._id}`,
       { items: [
         ...currentList.items,
-        { uuid: uuid, description: entry }
+        { description: entry },
       ]},
       { headers: { Authorization: `Bearer ${user.token}` } }
     )
@@ -44,7 +44,7 @@ const ListView = ({ currentList }) => {
           type: 'UPDATE_LIST',
           payload: {
             ...currentList,
-            items: [...currentList.items, { uuid: uuid, description: entry }]
+            items: [...currentList.items, { description: entry }]
           }
         });
         setEntry('');
@@ -75,7 +75,7 @@ const ListView = ({ currentList }) => {
       .catch((error) => console.error(error.message));
     }
   };
-  
+
   return (
     <>
       <p>{currentList.name}</p>
@@ -84,11 +84,11 @@ const ListView = ({ currentList }) => {
         (currentList.items.length > 0) ? (
           currentList.items.map((item) => {
             return <ListItem
-            key={item.uuid}
-            description={item.description}
+              key={item._id}
+              description={item.description}
             dispatchLists={dispatchLists}
-            uuid={item.uuid}
-            currentList={currentList}
+              _id={item._id}
+              currentList={currentList}
             ></ListItem>
           })
         ) : <p>No list items yet.</p>

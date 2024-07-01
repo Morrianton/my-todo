@@ -16,7 +16,7 @@ const ListNav = ({ currentList, selectList }) => {
   return (
     <>
       {
-        availableLists.map((list) => <button key={uuidv4()} onClick={selectList}>{list.name}</button>)
+        availableLists.map((list) => <button key={list._id} onClick={selectList}>{list.name}</button>)
       }
     </>
   );

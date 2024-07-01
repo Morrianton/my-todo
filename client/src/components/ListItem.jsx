@@ -12,11 +12,11 @@ import ListsContext from "../contexts/Lists.context";
  * @component
  * @param {Object} props             Properties used by the component.
  * @param {string} props.description The list item description/name.
- * @param {string} props.uuid        Unique ID of the item.
+ * @param {string} props._id         Database ID of the item.
  * @param {Object} props.currentList The current list being viewed.
- * @returns {JSX.Element} The rendered list item component.
+ * @returns {React.JSX.Element} The rendered list item component.
  */
-const ListItem = ({ description, uuid, currentList }) => {
+const ListItem = ({ description, _id, currentList }) => {
   const { dispatchLists } = useContext(ListsContext);
   const { user } = useContext(AuthContext);
   const [entry, setEntry] = useState(description);
@@ -29,7 +29,7 @@ const ListItem = ({ description, uuid, currentList }) => {
   const deleteItem = () => {
     axios.patch(
       `/api/v1/lists/${currentList._id}`,
-      { items: currentList.items.filter((item) => item.uuid !== uuid) },
+      { items: currentList.items.filter((item) => item._id !== _id) },
       { headers: { Authorization: `Bearer ${user.token}` } }
     )
     .then((response) => {
@@ -37,7 +37,7 @@ const ListItem = ({ description, uuid, currentList }) => {
         dispatchLists({
           payload: {
             ...currentList,
-            items: currentList.items.filter((item) => item.uuid !== uuid)
+            items: currentList.items.filter((item) => item._id !== _id)
           },
           type: 'UPDATE_LIST',
         });
@@ -68,8 +68,8 @@ const ListItem = ({ description, uuid, currentList }) => {
     axios.patch(
       `/api/v1/lists/${currentList._id}`,
       { items: [
-        ...currentList.items.filter((item) => item.uuid !== uuid),
-        { uuid: uuid, description: entry }
+        ...currentList.items.filter((item) => item._id !== _id),
+        { description: entry }
       ]},
       { headers: { Authorization: `Bearer ${user.token}` } }
     )
@@ -78,7 +78,7 @@ const ListItem = ({ description, uuid, currentList }) => {
         dispatchLists({
           payload: {
             ...currentList,
-            items: [...currentList.items.filter((item) => item.uuid !== uuid), { uuid, description: entry }]
+            items: [...currentList.items.filter((item) => item._id !== _id), { description: entry }]
           },
           type: 'UPDATE_LIST'
         });
