@@ -1,6 +1,7 @@
 // Libraries
 import axios from 'axios';
 import { useContext, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 // Contexts
 import ListsContext from '../contexts/Lists.context';
@@ -15,7 +16,7 @@ import ListItem from "./ListItem";
  * @component
  * @param {Object} props             Properties used by the component.
  * @param {Object} props.currentList The current list being viewed. 
- * @returns {JSX.Element} The rendered list view component.
+ * @returns {React.JSX.Element} The rendered list view component.
  */
 const ListView = ({ currentList }) => {
   const { dispatchLists } = useContext(ListsContext);
@@ -86,7 +87,7 @@ const ListView = ({ currentList }) => {
               description={item.description}
               dispatchLists={dispatchLists}
               _id={item._id}
-              currentList={currentList}
+              key={uuidv4()}
             ></ListItem>;
           })
         ) : <p>No list items yet.</p>

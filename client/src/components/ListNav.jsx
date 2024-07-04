@@ -1,5 +1,6 @@
 // Libraries
 import { useContext } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 // Contexts
 import ListsContext from '../contexts/Lists.context';
@@ -15,7 +16,7 @@ const ListNav = ({ currentList, selectList }) => {
   return (
     <>
       {
-        availableLists.map((list) => <button key={list._id} onClick={selectList}>{list.name}</button>)
+        availableLists.map((list) => <button key={uuidv4()} onClick={selectList}>{list.name}</button>)
       }
     </>
   );
