@@ -85,10 +85,7 @@ const ListItem = ({ description, _id, currentList }) => {
       }
     })
     .catch((error) => console.error(error.message))
-    .finally(() => {
-      setOldValue(entry);
-      setIsStatic(true);
-    });
+  };
   };
   
   return (
