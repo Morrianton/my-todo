@@ -32,13 +32,12 @@ const LoginPage = () => {
       { email, password }
     )
     .then((response) => {
-      localStorage.setItem('user', JSON.stringify(response.data));
-      dispatchAuth({ payload: response.data, type: 'LOG_IN'});
-      setEmail('')
-      setPassword('')
+      if (response.statusText === 'OK') {
+        localStorage.setItem('user', JSON.stringify(response.data));
+        dispatchAuth({ payload: response.data, type: 'LOG_IN'});
+      }
     })
     .catch((error) => setError(error.response.data.error))
-    .finally(() => setIsLoading(false));
   };
 
   return (
