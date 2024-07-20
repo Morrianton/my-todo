@@ -7,4 +7,12 @@ export default new Schema({
     type: String,
     required: true,
   },
+  prev_list_id: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  list_id: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
 });
