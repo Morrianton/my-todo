@@ -21,7 +21,7 @@ const ListItem = ({ description, _id, currentList }) => {
   const { user } = useContext(AuthContext);
   const [entry, setEntry] = useState(description);
   const [isStatic, setIsStatic] = useState(true);
-  const [oldValue, setOldValue] = useState(description);
+  const [isPending, setIsPending] = useState(false);
 
   /**
    * Deletes the item from the list in the database and state.
@@ -50,7 +50,7 @@ const ListItem = ({ description, _id, currentList }) => {
    * Cancels changes to the item.
    */
   const cancelChanges = () => {
-    setEntry(oldValue);
+    setEntry(description);
     setIsStatic(true);
   };
 
