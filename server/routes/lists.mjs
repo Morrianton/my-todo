@@ -7,7 +7,7 @@ import {
   deleteList,
   getList,
   getLists,
-  updateList
+  updateList,
 } from '../controllers/listController.mjs';
 
 const router = express.Router();

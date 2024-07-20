@@ -11,7 +11,12 @@ const listSchema = new Schema({
     type: String,
     required: true,
   },
-  items: {
+  completed_items: {
+    type: [listItemSchema],
+    required: true,
+    default: () => ([]),
+  },
+  uncompleted_items: {
     type: [listItemSchema],
     required: true,
     default: () => ([]),
