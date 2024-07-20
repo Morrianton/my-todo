@@ -6,7 +6,6 @@ import {
   getUser,
   logInUser,
   signUpUser,
-  updateCompleted
 } from '../controllers/userController.mjs';
 
 const router = express.Router();
@@ -21,8 +20,5 @@ router.post('/signup', signUpUser);
 
 // DELETE a user
 router.delete('/', requireAuth, deleteUser);
-
-// PATCH a user's completed tasks list
-router.patch('/', requireAuth, updateCompleted);
 
 export default router;

@@ -3,26 +3,8 @@ import mongoose from "mongoose";
 import argon2 from "argon2";
 import validator from "validator";
 
-// Subdocuments
-import listItemSchema from "../models/subdocuments/listItem.mjs";
-
 const Schema = mongoose.Schema;
 
-// subschema
-const completedListSchema = new Schema({
-  items: {
-    type: [listItemSchema],
-    required: true,
-    default: () => ([]),
-  },
-  name: {
-    type: String,
-    default: 'completed',
-    required: true,
-  },
-});
-
-// primary schema
 const userSchema = new Schema({
   email: {
     type: String,
@@ -33,11 +15,6 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-  },
-  completed: {
-    type: completedListSchema,
-    required: true,
-    default: () => ({}),
   },
  }, { timestamps: true });
 
