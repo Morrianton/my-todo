@@ -43,21 +43,12 @@ const TasksPage = () => {
           signal: abortController.signal,
         }
       )
-      .then((listsResponse) => {
-        if (listsResponse.statusText === 'OK') {
-          axios.get(
-            '/api/v1/user',
-            { headers: { Authorization: `Bearer ${user.token}` } }
-          )
-          .then((userResponse) => {
-            if (userResponse.statusText === 'OK') {
-              // add completed list to the lists
-              dispatchLists({ payload: [userResponse.data.completed, ...listsResponse.data], type: 'SET_LISTS' });
-              setCurrentList(userResponse.data.completed);
-              setIsLoggedIn(true);
-            }
-          })
-          .catch((error) => console.error(error.message));
+      .then((response) => {
+        if (response.statusText === 'OK') {
+          dispatchLists({ payload: response.data, type: 'SET_LISTS' });
+          // TODO: store current list in local storage
+          setCurrentList(response.data[0]);
+          setIsLoggedIn(true);
         }
       })
       .catch((error) => {
