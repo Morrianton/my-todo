@@ -24,15 +24,18 @@ const ListView = ({ currentList }) => {
   const [entry, setEntry] = useState('');
 
   /**
-   * Adds a new item to the list in the database and state.
+   * Adds a new uncompleted task to the list in the database and state.
    */
   const addListItem = () => {
-
     axios.patch(
       `/api/v1/lists/${currentList._id}`,
-      { items: [
-        ...currentList.items,
-        { description: entry },
+      { uncompleted_items: [
+        ...currentList.uncompleted_items,
+        {
+          description: entry,
+          prev_list_id: currentList._id,
+          list_id: currentList._id,
+        },
       ]},
       { headers: { Authorization: `Bearer ${user.token}` } }
     )
@@ -43,8 +46,15 @@ const ListView = ({ currentList }) => {
           type: 'UPDATE_LIST',
           payload: {
             ...currentList,
-            items: [...currentList.items, { description: entry }]
-          }
+            uncompleted_items: [
+              ...currentList.uncompleted_items,
+              {
+                description: entry,
+                prev_list_id: currentList._id,
+                list_id: currentList._id,
+              },
+            ],
+          },
         });
         setEntry('');
       }
@@ -78,27 +88,37 @@ const ListView = ({ currentList }) => {
   return (
     <>
       <p>{currentList.name}</p>
-      {(currentList.name !== 'completed') && <button onClick={deleteList}>Delete List</button>}
+      <button onClick={deleteList}>Delete List</button>
       {
-        (currentList.items.length > 0) ? (
-          currentList.items.map((item) => {
+        (currentList.uncompleted_items.length > 0) ? (
+          currentList.uncompleted_items.map((item) => {
             return <ListItem
-              key={item._id}
+              currentList={currentList}
               description={item.description}
-              dispatchLists={dispatchLists}
               _id={item._id}
+              isCompleted={false}
               key={uuidv4()}
-            ></ListItem>;
+            />;
           })
         ) : <p>No list items yet.</p>
       }
+      <p>Completed</p>
+      <button onClick={clearCompleted}>Clear Completed</button>
       {
-        (currentList.name !== 'completed') &&
-          <>
-            <input type="text" value={entry} onChange={(event) => setEntry(event.target.value)} />
-            <button onClick={addListItem}>Add Item</button>
-          </>
+        currentList.completed_items.length > 0 && (
+          currentList.completed_items.map((item) => {
+            return <ListItem
+              currentList={currentList}
+              description={item.description}
+              _id={item._id}
+              isCompleted={true}
+              key={uuidv4()}
+            />
+          })
+        )
       }
+      <input type="text" value={entry} onChange={(event) => setEntry(event.target.value)} />
+      <button onClick={addListItem}>Add Item</button>
     </>
   );
 };
