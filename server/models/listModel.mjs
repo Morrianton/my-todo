@@ -22,7 +22,7 @@ const listSchema = new Schema({
     default: () => ([]),
   },
   owner_id: {
-    type: String,
+    type: Schema.Types.ObjectId,
     required: true,
   },
 }, { timestamps: true });
