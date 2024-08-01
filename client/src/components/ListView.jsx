@@ -66,6 +66,29 @@ const ListView = ({ currentList }) => {
   };
 
   /**
+   * Clears all completed tasks from the list in the database and state.
+   */
+  const clearCompleted = () => {
+    axios.patch(
+      `/api/v1/lists/${currentList._id}`,
+      { completed_items: [] },
+      { headers: { Authorization: `Bearer ${user.token}` } }
+    )
+    .then((response) => {
+      if (response.statusText === 'OK') {
+        dispatchLists({
+          payload: {
+            ...currentList,
+            completed_items: [],
+          },
+          type: 'UPDATE_LIST'
+        })
+      }
+    })
+    .catch((error) => console.error(error.message));
+  };
+
+  /**
    * Deletes the current list if user confirms.
    */
   const deleteList = () => {
